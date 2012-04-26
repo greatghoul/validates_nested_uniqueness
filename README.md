@@ -1,4 +1,5 @@
-# ValidatesUniqueChildren
+# validates_nested_uniqueness
+
 This gem solves the problem of having a nested form that requires unique
 children.  The built-in uniqueness validation in Rails performs an SQL
 query to determine the uniqueness of an object.  So if you are working with
@@ -22,7 +23,7 @@ end
 
 Add this line to your application's Gemfile:
 
-    gem 'validates_unique_children'
+    gem 'validates_nested_uniqueness'
 
 And then execute:
 
@@ -30,16 +31,22 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install validates_unique_children
+    $ gem install validates_nested_uniqueness
 
 ## Usage
 
-To extend on the example above, we would rewrite the Company class as follows:
+To enable proper validation of unique nested objects, we use nested_uniqueness:
 ```ruby
-class Company
-  has_many :employees
-  # Pass an array of attributes that make up a unique object:
-  validates :employees, :unique_children => [:ssn, :name]
+class Employee
+
+  # It's probably best to leave the Rails uniqueness validation as this will
+  # work properly when the Employee is being updated directly.
+  validates :ssn, :uniqueness => { :scope => :company }
+
+  # Here, we want the social security number to be unique per company,
+  # so we validate the ssn, passing it options for which class is the parent
+  # and which association on the parent is to be uniquely validated.
+  validates :ssn, :nested_uniqueness => { :klass => 'Company', :association => :employees }
 end
 ```
 
