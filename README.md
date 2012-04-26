@@ -1,10 +1,8 @@
 # validates_nested_uniqueness
-
-This gem solves the problem of having a nested form that requires unique
-children.  The built-in uniqueness validation in Rails performs an SQL
-query to determine the uniqueness of an object.  So if you are working with
-a new parent that has many new children, the uniqueness validation in Rails
-will not validate properly.
+Allows you to add a uniqueness constraint on an attribute so that when the model 
+is on the other side of a has_many relationship the uniqueness will be respected 
+(in nested circumstances).  Rails built-in uniqueness works by issuing an SQL 
+query so in memory objects are not validated properly.
 
 The situation below, for example, will allow you to save a Company with two
 duplicate employees.
