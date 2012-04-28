@@ -45,7 +45,7 @@ class Employee
   # Here, we want the social security number to be unique per company,
   # so we validate the ssn, passing it options for which class is the parent
   # and which association on the parent is to be uniquely validated.
-  validates :ssn, :nested_uniqueness => { :class => 'Company', :association => :employees }
+  validates :ssn, :nested_uniqueness => { :scope => :company, :association => :employees }
 end
 ```
 
